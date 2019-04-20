@@ -18,11 +18,14 @@ class Column {
                     headers: myHeaders,
                     body: data
                 })
-                    .then(resp => resp.json)
+                    .then(resp => resp.json())
                     .then(resp => {
                         let card = new Card(resp.id, cardName);
                         this.addCard(card);
                     })
+            }
+            if (e.target.classList.contains('change-col-name')) {
+                this.changeColName();
             }
         });
     }
@@ -33,5 +36,18 @@ class Column {
         fetch(`${prefix}${baseUrl}/column/${this.id}`, { method: 'DELETE', headers: myHeaders })
             .then(resp => resp.json())
             .then(resp => this.element.parentNode.removeChild(this.element));
+    }
+    changeColName() {
+        let newName = prompt('Enter a column name') || 'New column';
+        let data = new FormData();
+        data.append('name', newName);
+        data.append('id', this.id);
+
+        fetch(`${prefix}${baseUrl}/column/${this.id}`, { method: 'PUT', headers: myHeaders, body: data })
+            .then(resp => resp.json())
+            .then(resp => {
+                this.name = newName;
+                this.id = resp.id;
+            });
     }
 }

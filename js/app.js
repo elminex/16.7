@@ -6,12 +6,7 @@ function generateTemplate(name, data, basicElement) {
     return element;
 }
 
-let prefix = "https://cors-anywhere.herokuapp.com/"
-
-function unwrap(node) {
-    node.replaceWith(...node.childNodes);
-}
-
+const prefix = "https://cors-anywhere.herokuapp.com/"
 const baseUrl = 'https://kodilla.com/pl/bootcamp-api';
 const myHeaders = {
     'X-Client-Id': '3982',
@@ -20,12 +15,21 @@ const myHeaders = {
 
 fetch(prefix + baseUrl + '/board', { method: 'GET', headers: myHeaders })
     .then((resp) => resp.json())
-    .then((resp) => setupColumns(resp.columns));
+    .then((resp) => {
+        setupBoards(resp.id, resp.name, resp.columns);
 
-function setupColumns(columns) {
+    })
+
+function setupBoards(id, name, columns) {
+    let board = new Board(id, name);
+    document.querySelector('.board-wrapper').appendChild(board.element)
+    setupColumns(board, columns);
+}
+
+function setupColumns(board, columns) {
     columns.forEach(column => {
         let col = new Column(column.id, column.name);
-        board1.addColumn(col);
+        board.addColumn(col);
         setupCards(col, column.cards);
     });
 }
