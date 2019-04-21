@@ -48,7 +48,6 @@ body {
 .board {
     font-family: 'Indie Flower', cursive;
     width: 100%;
-    min-width: 500px;
     text-align: center;
     padding: 10px;
     margin: 0 auto 20px;
@@ -86,8 +85,8 @@ body {
         justify-content: space-between;
 
         &>div {
-            min-width: 30%;
-            margin: 10px;
+            width: 80%;
+            margin: 0 auto;
         }
     }
 
@@ -151,6 +150,24 @@ body {
     }
 }
 
+.sortable-chosen>div {
+    &:after {
+        opacity: 0;
+        transition: opacity 1s .5s;
+    }
+}
+
+.sortable-ghost>div:after {
+    animation: pin-up .5s ease-out;
+    animation-fill-mode: forwards;
+    opacity: 0;
+    transition: opacity 1s .5s;
+}
+
+.sortable-drag>div:after {
+    visibility: hidden;
+}
+
 //BUTTONS
 .btn-delete {
     position: absolute;
@@ -160,12 +177,10 @@ body {
 }
 
 .create-column {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    width: 90px;
-    height: 60px;
+    width: 140px;
+    height: 40px;
     @include button;
+    margin-bottom: 10px;
 }
 
 .change-card-name,
@@ -198,6 +213,29 @@ body {
     }
 }
 
+@keyframes pin-up {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+
+    25% {
+        transform: translate3d(1px, -1px, 5px);
+    }
+
+    50% {
+        transform: translate3d(2px, -2px, 10px);
+    }
+
+    75% {
+        transform: translate3d(3px, -3px, 20px);
+    }
+
+    100% {
+        transform: translate3d(5px, -5px, 30px);
+    }
+}
+
+
 @media (min-width: 768px) {
     .board {
         &-wrapper {
@@ -214,4 +252,17 @@ body {
             font-size: 4rem;
         }
     }
+
+    .column-container>div {
+        width: 30%;
+    }
+
+    .create-column {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        width: 90px;
+        height: 60px;
+    }
+
 }
